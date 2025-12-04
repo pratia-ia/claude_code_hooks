@@ -4,22 +4,31 @@
 # Leer input JSON desde stdin
 $inputJson = [Console]::In.ReadToEnd()
 
+# Debug: guardar raw input para diagnóstico
+$debugDir = Join-Path $PWD.Path ".claude\logs"
+if (-not (Test-Path $debugDir)) {
+    New-Item -ItemType Directory -Path $debugDir -Force | Out-Null
+}
+$debugFile = Join-Path $debugDir "hook-debug.log"
+Add-Content -Path $debugFile -Value "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') RAW INPUT: $inputJson" -Encoding UTF8
+
 try {
-    $input = $inputJson | ConvertFrom-Json
+    $hookData = $inputJson | ConvertFrom-Json
 } catch {
+    Add-Content -Path $debugFile -Value "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') PARSE ERROR: $($_.Exception.Message)" -Encoding UTF8
     exit 0
 }
 
 # Extraer campos del JSON
-$sessionId = if ($input.session_id) { $input.session_id } else { "unknown" }
-$transcriptPath = if ($input.transcript_path) { $input.transcript_path } else { "" }
-$hookEvent = if ($input.hook_event_name) { $input.hook_event_name } else { "unknown" }
-$cwd = if ($input.cwd) { $input.cwd } else { $PWD.Path }
+$sessionId = if ($hookData.session_id) { $hookData.session_id } else { "unknown" }
+$transcriptPath = if ($hookData.transcript_path) { $hookData.transcript_path } else { "" }
+$hookEvent = if ($hookData.hook_event_name) { $hookData.hook_event_name } else { "unknown" }
+$cwd = if ($hookData.cwd) { $hookData.cwd } else { $PWD.Path }
 
 # Campos específicos según el tipo de hook
-$prompt = if ($input.prompt) { $input.prompt } else { "" }
-$toolName = if ($input.tool_name) { $input.tool_name } else { "" }
-$toolInput = $input.tool_input
+$prompt = if ($hookData.prompt) { $hookData.prompt } else { "" }
+$toolName = if ($hookData.tool_name) { $hookData.tool_name } else { "" }
+$toolInput = $hookData.tool_input
 
 # Timestamp
 $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
