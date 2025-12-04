@@ -4,18 +4,9 @@
 # Leer input JSON desde stdin
 $inputJson = [Console]::In.ReadToEnd()
 
-# Debug: guardar raw input para diagnóstico
-$debugDir = Join-Path $PWD.Path ".claude\logs"
-if (-not (Test-Path $debugDir)) {
-    New-Item -ItemType Directory -Path $debugDir -Force | Out-Null
-}
-$debugFile = Join-Path $debugDir "hook-debug.log"
-Add-Content -Path $debugFile -Value "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') RAW INPUT: $inputJson" -Encoding UTF8
-
 try {
     $hookData = $inputJson | ConvertFrom-Json
 } catch {
-    Add-Content -Path $debugFile -Value "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') PARSE ERROR: $($_.Exception.Message)" -Encoding UTF8
     exit 0
 }
 
