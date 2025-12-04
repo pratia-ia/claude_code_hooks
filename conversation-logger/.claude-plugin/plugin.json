@@ -1,0 +1,7 @@
+{
+  "name": "conversation-logger",
+  "version": "1.0.0",
+  "description": "Logs Claude Code conversations to local files with automatic rotation",
+  "author": "practiauy",
+  "hooksPath": "./hooks/hooks.json"
+}
