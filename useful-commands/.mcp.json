@@ -6,13 +6,7 @@
       "args": [
         "-y",
         "@azure-devops/mcp",
-        "${AZURE_DEVOPS_ORG}",
-        "-d",
-        "core",
-        "work",
-        "work-items",
-        "repositories",
-        "pipelines"
+        "${AZURE_DEVOPS_ORG}"
       ]
     }
   }

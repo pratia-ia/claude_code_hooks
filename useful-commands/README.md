@@ -51,13 +51,17 @@ Documenta la sesión actual de Claude Code.
 
 ## Requisitos
 
-### Variable de Entorno
+### Variables de Entorno
 
-El plugin requiere la siguiente variable de entorno configurada:
+El plugin requiere las siguientes variables de entorno configuradas:
 
 ```bash
-AZURE_DEVOPS_ORG=tu-organizacion  # Nombre de tu organización en Azure DevOps
+AZURE_DEVOPS_ORG=tu-organizacion      # Nombre de tu organización en Azure DevOps
+AZURE_DEVOPS_PROJECT=tu-proyecto      # Nombre del proyecto en Azure DevOps
+AZURE_DEVOPS_REPO=tu-repositorio      # Nombre del repositorio (opcional, se detecta del remote)
 ```
+
+Puedes configurarlas en tu archivo `.claude/settings.json` o en las variables de entorno del sistema.
 
 ### Autenticación
 
@@ -88,22 +92,28 @@ Este plugin incluye el servidor MCP oficial de Microsoft para Azure DevOps:
 - **Repositorio**: [microsoft/azure-devops-mcp](https://github.com/microsoft/azure-devops-mcp)
 - **Paquete**: `@azure-devops/mcp`
 
-### Dominios habilitados
+### Dominios disponibles
 
-El MCP está configurado con los siguientes dominios:
+Por defecto se cargan todos los dominios. Si quieres limitar los dominios, edita `.mcp.json` y agrega el flag `-d`:
+
+```json
+"args": ["-y", "@azure-devops/mcp", "${AZURE_DEVOPS_ORG}", "-d", "core", "repositories", "pipelines"]
+```
 
 | Dominio | Descripción |
 |---------|-------------|
 | `core` | Operaciones básicas de Azure DevOps |
 | `work` | Gestión de trabajo |
 | `work-items` | Work items (tareas, bugs, etc.) |
-| `repositories` | Repositorios Git |
+| `repositories` | Repositorios Git y Pull Requests |
 | `pipelines` | Pipelines de CI/CD |
-
-Para agregar más dominios (ej: `wiki`, `test-plans`, `advanced-security`), editar `.mcp.json`.
+| `wiki` | Wikis del proyecto |
+| `test-plans` | Planes de prueba |
+| `search` | Búsqueda en Azure DevOps |
+| `advanced-security` | Seguridad avanzada |
 
 ## Notas
 
-- Los comandos están diseñados para el proyecto "Mesa de Ayuda" en Azure DevOps
-- Las descripciones de PR se generan en español
+- Los comandos son genéricos y funcionan con cualquier proyecto de Azure DevOps
+- Las descripciones de PR se generan en el mismo idioma que los mensajes de commit
 - El comando `/document` crea la estructura de directorios si no existe
