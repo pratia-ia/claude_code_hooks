@@ -49,18 +49,58 @@ Documenta la sesión actual de Claude Code.
 - Incluye tareas completadas, problemas resueltos, archivos modificados
 - Genera próximos pasos sugeridos
 
+## Requisitos
+
+### Variable de Entorno
+
+El plugin requiere la siguiente variable de entorno configurada:
+
+```bash
+AZURE_DEVOPS_ORG=tu-organizacion  # Nombre de tu organización en Azure DevOps
+```
+
+### Autenticación
+
+La autenticación se realiza mediante el navegador la primera vez que se ejecuta una herramienta de Azure DevOps. Se te pedirá iniciar sesión con tu cuenta de Microsoft.
+
+### Node.js
+
+Requiere Node.js 20+ instalado.
+
 ## Estructura
 
 ```
 useful-commands/
 ├── .claude-plugin/
 │   └── plugin.json          # Metadata del plugin
+├── .mcp.json                 # Configuración del MCP de Azure DevOps
 ├── commands/
 │   ├── create-pr.md         # Comando /create-pr
 │   ├── document.md          # Comando /document
 │   └── update-pr.md         # Comando /update-pr
 └── README.md
 ```
+
+## MCP Server Incluido
+
+Este plugin incluye el servidor MCP oficial de Microsoft para Azure DevOps:
+
+- **Repositorio**: [microsoft/azure-devops-mcp](https://github.com/microsoft/azure-devops-mcp)
+- **Paquete**: `@azure-devops/mcp`
+
+### Dominios habilitados
+
+El MCP está configurado con los siguientes dominios:
+
+| Dominio | Descripción |
+|---------|-------------|
+| `core` | Operaciones básicas de Azure DevOps |
+| `work` | Gestión de trabajo |
+| `work-items` | Work items (tareas, bugs, etc.) |
+| `repositories` | Repositorios Git |
+| `pipelines` | Pipelines de CI/CD |
+
+Para agregar más dominios (ej: `wiki`, `test-plans`, `advanced-security`), editar `.mcp.json`.
 
 ## Notas
 
