@@ -24,6 +24,16 @@
         "name": "practiauy",
         "email": ""
       }
+    },
+    {
+      "name": "security-agent",
+      "source": "./security-agent",
+      "description": "Security agent for code vulnerability detection and security audits",
+      "version": "1.0.0",
+      "author": {
+        "name": "practiauy",
+        "email": ""
+      }
     }
   ]
 }

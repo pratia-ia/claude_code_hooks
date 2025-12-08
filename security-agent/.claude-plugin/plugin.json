@@ -1,0 +1,9 @@
+{
+  "name": "security-agent",
+  "version": "1.0.0",
+  "description": "Security agent for code vulnerability detection and security audits",
+  "author": {
+    "name": "practiauy",
+    "email": ""
+  }
+}
