@@ -4,11 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Claude Code plugin marketplace containing three plugins:
+Claude Code plugin marketplace containing four plugins:
 
 1. **conversation-logger**: Automatically logs conversations to local files with rotation (Windows-only, PowerShell 5.1+)
 2. **useful-commands**: Slash commands for PR management (Azure DevOps & GitHub) and session documentation, with integrated MCP servers
 3. **security-agent**: Custom agent for code vulnerability detection and security audits
+4. **senior-reviewer**: Custom agent for senior-level code reviews focusing on quality, optimizations, and best practices
 
 ## Installation
 
@@ -20,6 +21,7 @@ Claude Code plugin marketplace containing three plugins:
 /plugin enable conversation-logger@practia-ia
 /plugin enable useful-commands@practia-ia
 /plugin enable security-agent@practia-ia
+/plugin enable senior-reviewer@practia-ia
 ```
 
 Requires Claude Code version 1.0.40+ (plugin support).
@@ -50,6 +52,11 @@ security-agent/
 ├── agents/
 │   └── security-review.md         # security-review agent definition
 └── README.md
+senior-reviewer/
+├── .claude-plugin/plugin.json     # Plugin metadata
+├── agents/
+│   └── senior-code-review.md      # senior-code-review agent definition
+└── README.md
 ```
 
 ## Architecture
@@ -61,7 +68,7 @@ Claude Code discovers plugins through `marketplace.json`, which references plugi
 - **Hooks**: Event-driven command execution (conversation-logger)
 - **Slash Commands**: User-invocable commands in `.md` files (useful-commands)
 - **MCP Servers**: External tool integrations via Model Context Protocol (useful-commands)
-- **Agents**: Specialized AI agents for delegated tasks (security-agent)
+- **Agents**: Specialized AI agents for delegated tasks (security-agent, senior-reviewer)
 
 ### conversation-logger Plugin
 
@@ -256,3 +263,65 @@ Specialized agent for code security audits with expertise in:
 - Bash: Execute security analysis tools
 
 The agent balances security with usability, providing actionable remediation steps and explaining the rationale behind each recommendation.
+
+### senior-reviewer Plugin
+
+#### Agent Architecture
+
+Uses the same agent structure as security-agent: markdown files in `agents/` with YAML frontmatter.
+
+#### senior-code-review Agent
+
+Senior software engineer (15+ years experience) specialized in comprehensive code reviews:
+
+**Review Dimensions:**
+- **Architecture & Design**: Component boundaries, coupling/cohesion, design patterns, SOLID principles
+- **Code Quality**: Readability, naming, function size, DRY/KISS/YAGNI, code smells
+- **Performance**: Algorithm complexity, optimization opportunities, resource management, caching
+- **Best Practices**: Error handling, testing, documentation, technical debt
+- **Maintainability**: Organization, structure, future-proofing
+
+**Multi-Language Expertise:**
+- JavaScript/TypeScript (React hooks, async/await, bundle size)
+- Python (PEP 8, comprehensions, generators, type hints)
+- Java (Stream API, Optional, concurrency)
+- C# (LINQ, async patterns, nullable types)
+- Go (goroutines, channels, error handling)
+- Rust (ownership, lifetimes, zero-cost abstractions)
+
+**Review Process:**
+1. Understand context and purpose
+2. Multi-layer analysis (architecture, quality, performance, patterns)
+3. Detect code smells and anti-patterns
+4. Prioritized feedback (Critical/High/Medium/Low)
+5. Provide before/after code examples
+6. Educational insights and learning opportunities
+
+**Feedback Structure:**
+- Summary of changes
+- Strengths (positive reinforcement)
+- Issues by priority with location, impact, recommendation
+- Architecture observations
+- Performance considerations
+- Learning opportunities with resources
+
+**Common Detections:**
+- Long functions (>50 lines), God objects, long parameter lists
+- Code duplication, primitive obsession, feature envy
+- N+1 queries, missing indexes, memory leaks
+- Synchronous operations that should be async
+- Missing caching, inefficient algorithms
+
+**Invocation:**
+- Manual: `/agents` → select `senior-code-review`
+- Direct: `@senior-code-review review my changes before PR`
+- Auto: When reviewing code, implementing features, or before PRs
+
+**Communication Principles:**
+- Constructive (focus on code, not person)
+- Explains "why" behind suggestions
+- Provides concrete examples
+- Prioritizes high-impact improvements
+- Encourages discussion (suggestions, not mandates)
+
+The agent mentors developers while improving code quality, balancing pragmatism with best practices.

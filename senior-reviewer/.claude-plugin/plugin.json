@@ -1,0 +1,9 @@
+{
+  "name": "senior-reviewer",
+  "version": "1.0.0",
+  "description": "Senior code reviewer agent for code quality, optimizations, and best practices",
+  "author": {
+    "name": "practiauy",
+    "email": ""
+  }
+}

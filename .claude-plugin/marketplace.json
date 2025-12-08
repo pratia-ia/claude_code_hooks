@@ -34,6 +34,16 @@
         "name": "practiauy",
         "email": ""
       }
+    },
+    {
+      "name": "senior-reviewer",
+      "source": "./senior-reviewer",
+      "description": "Senior code reviewer agent for code quality, optimizations, and best practices",
+      "version": "1.0.0",
+      "author": {
+        "name": "practiauy",
+        "email": ""
+      }
     }
   ]
 }
